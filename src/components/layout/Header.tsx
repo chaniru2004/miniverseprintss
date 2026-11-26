@@ -1,0 +1,117 @@
+'use client';
+
+import Link from 'next/link';
+import { Search, Menu, X, MessageCircle } from 'lucide-react';
+import { useState } from 'react';
+import { FACEBOOK_URL, INSTAGRAM_URL, KOOMBIYO_TRACKING_URL, TIKTOK_URL, WHATSAPP_LINK } from '@/lib/constants';
+import SocialIcon from '@/components/ui/SocialIcon';
+
+export default function Header() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Mapped to Gallery focus instead of Store
+  const navLinks = [
+    { href: '/collection', label: 'Collection' },
+    { href: '/gallery', label: 'Gallery' },
+    { href: KOOMBIYO_TRACKING_URL, label: 'Track Order' },
+    { href: '/shop/category/3d-wall-frames', label: '3D Wall Frames' },
+    { href: '/custom-order', label: 'Custom Order' },
+    { href: '/reviews', label: 'Reviews' },
+    { href: '/contact', label: 'Contact' },
+  ];
+
+  return (
+    <header className="sticky top-0 z-900 backdrop-blur-2xl bg-black/60 border-b border-white/[0.06] shadow-[0_1px_0_rgba(255,255,255,0.04),0_4px_24px_rgba(0,0,0,0.6)] transition-all" style={{ WebkitBackdropFilter: 'blur(24px)' }}>
+      <div className="max-w-[1400px] mx-auto px-6">
+        <div className="flex items-center h-[72px]">
+
+          {/* Left Section: Logo & Nav */}
+          <div className="flex items-center gap-12 flex-1">
+            {/* Logo */}
+            <Link href="/" aria-label="MiniVersePrints home" className="flex items-center">
+              <img
+                src="/images/miniverseprints-logo.webp"
+                alt="MiniVersePrints"
+                width={180}
+                height={58}
+                className="h-[58px] w-[180px] object-contain"
+              />
+            </Link>
+
+            {/* Desktop Nav */}
+            <nav className="hidden lg:flex items-center gap-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-[14px] font-medium text-zinc-300 hover:text-white transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Right Section: Actions */}
+          <div className="hidden lg:flex items-center gap-6">
+
+           
+            {/* Sleek Line Icons */}
+            <div className="flex items-center gap-5 border-l border-white/10 pl-5">
+              <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-zinc-400 hover:text-white transition-colors">
+                <SocialIcon name="facebook" className="w-5 h-5 flex-shrink-0" />
+              </a>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-zinc-400 hover:text-white transition-colors">
+                <SocialIcon name="instagram" className="w-5 h-5 flex-shrink-0" />
+              </a>
+              <a href={TIKTOK_URL} target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="text-zinc-400 hover:text-white transition-colors">
+                <SocialIcon name="tiktok" className="w-5 h-5 flex-shrink-0" />
+              </a>
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-zinc-400 hover:text-white transition-colors">
+                <MessageCircle className="w-5 h-5 flex-shrink-0" />
+              </a>
+            </div>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <div className="flex items-center gap-4 lg:hidden ml-auto">
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="text-zinc-300 p-1"
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      {mobileOpen && (
+        <div className="lg:hidden border-t border-white/5 bg-[#0a0a0a] animate-fade-in absolute w-full left-0">
+          <div className="px-4 py-6 space-y-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="block px-4 py-3 rounded-lg text-[15px] font-medium text-zinc-300 hover:text-white hover:bg-zinc-900 transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="mt-6 pt-6 border-t border-white/5 grid grid-cols-2 gap-2 px-2">
+              <Link href="/search" onClick={() => setMobileOpen(false)} className="flex flex-col items-center justify-center p-3 rounded-lg bg-zinc-900/50 text-zinc-400 hover:text-white">
+                <Search className="w-5 h-5 mb-1" />
+                <span className="text-[11px]">Search</span>
+              </Link>
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-3 rounded-lg bg-zinc-900/50 text-zinc-400 hover:text-white">
+                <MessageCircle className="w-5 h-5 mb-1" />
+                <span className="text-[11px]">Chat</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
